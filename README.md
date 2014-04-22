@@ -20,5 +20,5 @@ The project uses [Semantic Versioning 2.0.0][] for keeping track of changes.
 ## Donations
 Donations are highly appreciated in order to keep the development alive.
 
-__Bitcoin:__ 14wHehBtFt321WTV15khon8Juaxh9drnfJ
-__BlackCoin:__ B9nBaQSFV4Ns5L8Jze8vaxc176zeE8XjDQ
+- __Bitcoin:__ 14wHehBtFt321WTV15khon8Juaxh9drnfJ
+- __BlackCoin:__ B9nBaQSFV4Ns5L8Jze8vaxc176zeE8XjDQ
