@@ -7,13 +7,24 @@ namespace MintPalAPI
     {
         private HttpClient _httpClient;
 
-        public Markets Markets { get; private set; }
+        public Authenticator Authenticator { get; private set; }
 
-        public MintPalClient()
+        public Markets Markets { get; private set; }
+        public Wallet Wallet { get; private set; }
+
+        public MintPalClient(string publicApiKey, string privateApiKey)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri("https://api.mintpal.com/v2/", UriKind.Absolute) };
+            _httpClient = new HttpClient { BaseAddress = new Uri(Helper.ApiUrlBase, UriKind.Absolute) };
+
+            Authenticator = new Authenticator(_httpClient, publicApiKey, privateApiKey);
 
             Markets = new Markets(_httpClient);
+            Wallet = new Wallet(_httpClient, Authenticator);
+        }
+
+        public MintPalClient() : this(null, null)
+        {
+
         }
 
         public void Dispose()

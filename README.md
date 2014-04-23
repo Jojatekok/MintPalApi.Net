@@ -1,4 +1,4 @@
-# MintPal API .NET
+# MintPal API .NET [![Build status](https://ci.appveyor.com/api/projects/status/a44sdpakinbmnjt8)](https://ci.appveyor.com/project/Jojatekok/mintpal-api-net)
 This project makes your Microsoft .NET applications able to interact with the Application Programming Interface (API) of [MintPal][].
 The class library is written in [C#][], and the demo project uses [XAML][] ([WPF][]).
 

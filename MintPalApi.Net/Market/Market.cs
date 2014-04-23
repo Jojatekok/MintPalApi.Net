@@ -47,7 +47,7 @@ namespace MintPalAPI
 
         public Market(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) {
+            if (string.IsNullOrEmpty(name)) {
                 throw new ArgumentNullException("name");
             }
 

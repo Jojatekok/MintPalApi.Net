@@ -44,8 +44,10 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MintPalClient.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="JsonResponse.cs" />
+    <Compile Include="General\Authenticator.cs" />
+    <Compile Include="General\JsonResponse.cs" />
     <Compile Include="Market\Market.cs" />
     <Compile Include="Market\MarketChartData.cs" />
     <Compile Include="Market\MarketPeriod.cs" />
@@ -53,7 +55,8 @@
     <Compile Include="Market\Order.cs" />
     <Compile Include="Market\OrderType.cs" />
     <Compile Include="Market\Trade.cs" />
-    <Compile Include="MintPalClient.cs" />
+    <Compile Include="Wallet\Balance.cs" />
+    <Compile Include="Wallet\Wallet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
