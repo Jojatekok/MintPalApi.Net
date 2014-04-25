@@ -2,7 +2,7 @@
 
 namespace MintPalAPI.Demo
 {
-    public sealed partial class MainWindow : IDisposable
+    public sealed partial class MainWindow
     {
         private MintPalClient MintPalClient { get; set; }
 
@@ -24,21 +24,6 @@ namespace MintPalAPI.Demo
             }
 
             DataGrid1.Items.Refresh();
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing) {
-                if (MintPalClient != null) {
-                    MintPalClient.Dispose();
-                    MintPalClient = null;
-                }
-            }
         }
     }
 }

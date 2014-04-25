@@ -44,6 +44,7 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiWebClient.cs" />
     <Compile Include="MintPalClient.cs" />
     <Compile Include="Helper.cs" />
     <Compile Include="General\Authenticator.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Market\Order.cs" />
     <Compile Include="Market\OrderType.cs" />
     <Compile Include="Market\Trade.cs" />
+    <Compile Include="Wallet\Deposit.cs" />
     <Compile Include="Wallet\Balance.cs" />
     <Compile Include="Wallet\Wallet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

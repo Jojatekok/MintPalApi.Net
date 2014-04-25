@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -7,7 +6,7 @@ namespace MintPalAPI
 {
     public class Authenticator
     {
-        private HttpClient HttpClient { get; set; }
+        private ApiWebClient ApiWebClient { get; set; }
 
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
@@ -15,15 +14,16 @@ namespace MintPalAPI
         private static bool IsTimeDifferenceSet { get; set; }
         private static double TimeDifference { get; set; }
 
-        internal Authenticator(HttpClient httpClient, string publicKey, string privateKey) : this(httpClient)
+        internal Authenticator(ApiWebClient apiWebClient, string publicKey, string privateKey) : this(apiWebClient)
         {
+            apiWebClient.Authenticator = this;
             PublicKey = publicKey;
             PrivateKey = privateKey;
         }
 
-        internal Authenticator(HttpClient httpClient)
+        internal Authenticator(ApiWebClient apiWebClient)
         {
-            HttpClient = httpClient;
+            ApiWebClient = apiWebClient;
             if (!IsTimeDifferenceSet) SyncTime();
         }
 
@@ -31,7 +31,7 @@ namespace MintPalAPI
         {
             IsTimeDifferenceSet = true;
 
-            var serverTime = await HttpClient.ApiGetAsync<double>("timestamp");
+            var serverTime = await ApiWebClient.GetDataAsync<double>("timestamp");
             var clientTime = Helper.DateTimeToUnixTimeStamp(DateTime.UtcNow);
 
             TimeDifference = serverTime - clientTime;

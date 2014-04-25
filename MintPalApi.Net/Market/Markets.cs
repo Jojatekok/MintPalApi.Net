@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -7,48 +6,48 @@ namespace MintPalAPI
 {
     public class Markets
     {
-        private HttpClient HttpClient { get; set; }
+        private ApiWebClient ApiWebClient { get; set; }
 
-        internal Markets(HttpClient httpClient)
+        internal Markets(ApiWebClient apiWebClient)
         {
-            HttpClient = httpClient;
+            ApiWebClient = apiWebClient;
         }
 
         public Task<IList<Market>> GetSummaryAsync()
         {
-            return ApiGetAsync<IList<Market>>("summary");
+            return GetDataAsync<IList<Market>>("summary");
         }
 
         public Task<IList<Market>> GetSummaryAsync(string exchange)
         {
-            return ApiGetAsync<IList<Market>>("summary", exchange);
+            return GetDataAsync<IList<Market>>("summary", exchange);
         }
 
         public Task<Market> GetStatsAsync(string coinPair)
         {
-            return ApiGetAsync<Market>("stats", coinPair);
+            return GetDataAsync<Market>("stats", coinPair);
         }
 
         public Task<Market> GetStatsAsync(string coin, string exchange)
         {
-            return ApiGetAsync<Market>("stats", coin, exchange);
+            return GetDataAsync<Market>("stats", coin, exchange);
         }
 
         public Task<IList<Trade>> GetTradesAsync(string coin, string exchange)
         {
-            return ApiGetAsync<IList<Trade>>("trades", coin, exchange);
+            return GetDataAsync<IList<Trade>>("trades", coin, exchange);
         }
 
         public Task<IList<Order>> GetOrdersAsync(string coin, string exchange, OrderType type)
         {
             return type == OrderType.Buy ?
-                   ApiGetAsync<IList<Order>>("orders", coin, exchange, "BUY") :
-                   ApiGetAsync<IList<Order>>("orders", coin, exchange, "SELL");
+                   GetDataAsync<IList<Order>>("orders", coin, exchange, "BUY") :
+                   GetDataAsync<IList<Order>>("orders", coin, exchange, "SELL");
         }
 
         public Task<IList<MarketChartData>> GetChartDataAsync(string coin, string exchange)
         {
-            return ApiGetAsync<IList<MarketChartData>>("chartdata", coin, exchange);
+            return GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange);
         }
 
         public Task<IList<MarketChartData>> GetChartDataAsync(string coin, string exchange, MarketPeriod period)
@@ -77,13 +76,13 @@ namespace MintPalAPI
                     break;
             }
 
-            return ApiGetAsync<IList<MarketChartData>>("chartdata", coin, exchange, periodString);
+            return GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange, periodString);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> ApiGetAsync<T>(string command, params string[] parameters)
+        private async Task<T> GetDataAsync<T>(string command, params string[] parameters)
         {
-            return await HttpClient.ApiGetAsync<T>(Helper.ApiUrlMarket + command, parameters);
+            return await ApiWebClient.GetDataAsync<T>(Helper.ApiUrlPrefixMarket + command, parameters);
         }
     }
 }

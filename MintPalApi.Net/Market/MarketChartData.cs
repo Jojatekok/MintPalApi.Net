@@ -6,9 +6,9 @@ namespace MintPalAPI
     public class MarketChartData
     {
         [JsonProperty("date")]
-        public string DateTimeString { get; private set; }
-        public DateTime DateTime {
-            get { return DateTime.ParseExact(DateTimeString, "yyyy-MM-dd HH:mm", Helper.InvariantCulture); }
+        private string TimeString { get; set; }
+        public DateTime Time {
+            get { return DateTime.ParseExact(TimeString, "yyyy-MM-dd HH:mm", Helper.InvariantCulture); }
         }
 
         [JsonProperty("open")]

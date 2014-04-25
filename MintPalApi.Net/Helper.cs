@@ -1,7 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace MintPalAPI
@@ -10,33 +14,41 @@ namespace MintPalAPI
     {
         internal const string ApiUrlBase = "https://api.mintpal.com/";
         private const string ApiUrlVersionString = "v2/";
-        internal const string ApiUrlMarket = ApiUrlBase + ApiUrlVersionString + "market/";
-        internal const string ApiUrlWallet = ApiUrlBase + ApiUrlVersionString + "wallet/";
+        internal const string ApiUrlPrefixMarket = ApiUrlVersionString + "market/";
+        internal const string ApiUrlPrefixWallet = ApiUrlVersionString + "wallet/";
+
+        internal static readonly string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         internal static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
         private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
-        internal static async Task<T> ApiGetAsync<T>(this HttpClient httpClient, string command, params string[] parameters)
+        internal static async Task<string> GetResponseStringAsync(this HttpWebRequest request)
         {
-            var relativeUrl = command;
-            if (parameters.Length != 0) {
-                relativeUrl += "/" + string.Join("/", parameters);
-            }
+            using (var response = await request.GetResponseAsync()) {
+                using (var stream = response.GetResponseStream()) {
+                    if (stream == null) return null; // TODO: Throw Exception
 
-            var jsonString = await httpClient.GetStringAsync(relativeUrl);
-            return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
+                    using (var reader = new StreamReader(stream)) {
+                        return await reader.ReadToEndAsync();
+                    }
+                }
+            }
         }
 
-        internal static async Task<T> ApiGetAsync<T>(this HttpClient httpClient, Authenticator authenticator, string command, params string[] parameters)
+        internal static string ToHttpPostString(this Dictionary<string, object> dictionary)
         {
-            var relativeUrl = command;
-            if (parameters.Length != 0) {
-                relativeUrl += "/" + string.Join("/", parameters);
+            var output = string.Empty;
+            foreach (var entry in dictionary)
+            {
+                var valueString = entry.Value as string;
+                if (valueString == null) {
+                    output += "&" + entry.Key + "=" + entry.Value;
+                } else {
+                    output += "&" + entry.Key + "=" + valueString.Replace(' ', '+');
+                }
             }
 
-            relativeUrl = authenticator.GetUrl(httpClient.BaseAddress + relativeUrl);
-            var jsonString = await httpClient.GetStringAsync(relativeUrl);
-            return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
+            return output.Substring(1);
         }
 
         internal static DateTime UnixTimeStampToDateTime(double unixTimeStamp)

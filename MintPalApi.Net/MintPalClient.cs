@@ -1,11 +1,8 @@
-﻿using System;
-using System.Net.Http;
-
-namespace MintPalAPI
+﻿namespace MintPalAPI
 {
-    public sealed class MintPalClient : IDisposable
+    public sealed class MintPalClient
     {
-        private HttpClient _httpClient;
+        private ApiWebClient _apiWebClient;
 
         public Authenticator Authenticator { get; private set; }
 
@@ -14,32 +11,17 @@ namespace MintPalAPI
 
         public MintPalClient(string publicApiKey, string privateApiKey)
         {
-            _httpClient = new HttpClient { BaseAddress = new Uri(Helper.ApiUrlBase, UriKind.Absolute) };
+            _apiWebClient = new ApiWebClient(Helper.ApiUrlBase);
 
-            Authenticator = new Authenticator(_httpClient, publicApiKey, privateApiKey);
+            Authenticator = new Authenticator(_apiWebClient, publicApiKey, privateApiKey);
 
-            Markets = new Markets(_httpClient);
-            Wallet = new Wallet(_httpClient, Authenticator);
+            Markets = new Markets(_apiWebClient);
+            Wallet = new Wallet(_apiWebClient);
         }
 
         public MintPalClient() : this(null, null)
         {
 
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposing) {
-                if (_httpClient != null) {
-                    _httpClient.Dispose();
-                    _httpClient = null;
-                }
-            }
         }
     }
 }

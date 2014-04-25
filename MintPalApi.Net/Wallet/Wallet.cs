@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -7,29 +6,32 @@ namespace MintPalAPI
 {
     public class Wallet
     {
-        private HttpClient HttpClient { get; set; }
-        private Authenticator Authenticator { get; set; }
+        private ApiWebClient ApiWebClient { get; set; }
 
-        internal Wallet(HttpClient httpClient, Authenticator authenticator)
+        internal Wallet(ApiWebClient apiWebClient)
         {
-            HttpClient = httpClient;
-            Authenticator = authenticator;
+            ApiWebClient = apiWebClient;
         }
 
         public Task<Balance> GetBalanceAsync(string coin)
         {
-            return ApiGetAsync<Balance>("balances", coin);
+            return GetDataAsync<Balance>("balances", coin);
         }
 
         public Task<IList<Balance>> GetBalancesAsync()
         {
-            return ApiGetAsync<IList<Balance>>("balances");
+            return GetDataAsync<IList<Balance>>("balances");
+        }
+
+        public Task<IList<Deposit>> GetDepositsAsync()
+        {
+            return GetDataAsync<IList<Deposit>>("deposits");
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> ApiGetAsync<T>(string command, params string[] parameters)
+        private async Task<T> GetDataAsync<T>(string command, params string[] parameters)
         {
-            return await HttpClient.ApiGetAsync<T>(Authenticator, Helper.ApiUrlMarket + command, parameters);
+            return await ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixMarket + command, parameters);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace MintPalAPI
         public double AmountTotal { get; private set; }
 
         [JsonProperty("time")]
-        public double TimeUnix { get; private set; }
+        private double TimeUnix { get; set; }
         public DateTime Time {
             get { return Helper.UnixTimeStampToDateTime(TimeUnix); }
         }
