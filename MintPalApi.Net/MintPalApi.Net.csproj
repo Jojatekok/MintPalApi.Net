@@ -56,9 +56,10 @@
     <Compile Include="Market\Order.cs" />
     <Compile Include="Market\OrderType.cs" />
     <Compile Include="Market\Trade.cs" />
-    <Compile Include="Wallet\Deposit.cs" />
     <Compile Include="Wallet\Balance.cs" />
+    <Compile Include="Wallet\Deposit.cs" />
     <Compile Include="Wallet\Wallet.cs" />
+    <Compile Include="Wallet\Withdrawal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -20,7 +20,7 @@ namespace MintPalAPI
             BaseUrl = baseUrl;
         }
 
-        internal async Task<T> GetDataAsync<T>(bool authenticate, string command, params string[] parameters)
+        internal async Task<T> GetDataAsync<T>(bool authenticate, string command, params object[] parameters)
         {
             var relativeUrl = CreateRelativeUrl(authenticate, command, parameters);
 
@@ -28,17 +28,17 @@ namespace MintPalAPI
             return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
         }
 
-        internal async Task<T> GetDataAsync<T>(string command, params string[] parameters)
+        internal async Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
             return await GetDataAsync<T>(false, command, parameters);
         }
 
-        internal async Task<T> DeleteDataAsync<T>(string command, params string[] parameters)
+        internal async Task DeleteDataAsync(string command, params object[] parameters)
         {
             var relativeUrl = CreateRelativeUrl(true, command, parameters);
 
             var jsonString = await QueryStringAsync("DELETE", relativeUrl);
-            return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
+            JsonConvert.DeserializeObject<JsonResponse<object>>(jsonString, JsonSerializerSettings).CheckStatus();
         }
 
         internal async Task<T> PostDataAsync<T>(string relativeUrl, Dictionary<string, object> postData)
@@ -71,7 +71,7 @@ namespace MintPalAPI
             return await request.GetResponseStringAsync();
         }
 
-        private string CreateRelativeUrl(bool authenticate, string command, string[] parameters)
+        private string CreateRelativeUrl(bool authenticate, string command, object[] parameters)
         {
             var relativeUrl = command;
             if (parameters.Length != 0) {

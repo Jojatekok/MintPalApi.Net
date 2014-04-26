@@ -16,12 +16,16 @@ namespace MintPalAPI
             get { return _data; }
 
             private set {
-                if (Status != "success") {
-                    if (string.IsNullOrWhiteSpace(Message)) throw new WebException("Could not parse data from the server.", WebExceptionStatus.UnknownError);
-                    throw new WebException("Could not parse data from the server: " + Message, WebExceptionStatus.UnknownError);
-                }
-
+                CheckStatus();
                 _data = value;
+            }
+        }
+
+        internal void CheckStatus()
+        {
+            if (Status != "success") {
+                if (string.IsNullOrWhiteSpace(Message)) throw new WebException("Could not parse data from the server.", WebExceptionStatus.UnknownError);
+                throw new WebException("Could not parse data from the server: " + Message, WebExceptionStatus.UnknownError);
             }
         }
     }

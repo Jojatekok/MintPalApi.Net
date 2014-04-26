@@ -28,10 +28,99 @@ namespace MintPalAPI
             return GetDataAsync<IList<Deposit>>("deposits");
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> GetDataAsync<T>(string command, params string[] parameters)
+        public Task<IList<Deposit>> GetDepositsAsync(string coin)
         {
-            return await ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixMarket + command, parameters);
+            return GetDataAsync<IList<Deposit>>("deposits", coin);
+        }
+
+        public Task<IList<Deposit>> GetDepositsAsync(string coin, int start, int limit)
+        {
+            return GetDataAsync<IList<Deposit>>("deposits", coin, start, limit);
+        }
+
+        public Task<IList<Deposit>> GetDepositsAsync(int limit)
+        {
+            return GetDepositsAsync("ALL", 0, limit);
+        }
+
+        public Task<IList<Deposit>> GetDepositsAsync(int start, int limit)
+        {
+            return GetDepositsAsync("ALL", start, limit);
+        }
+
+        public Task<string> GetDepositAddressAsync(string coin)
+        {
+            return GetDataAsync<string>("depositaddress", coin);
+        }
+
+        public Task<string> GetDepositAddressAsync(string coin, bool createNew)
+        {
+            return createNew ?
+                   GetDataAsync<string>("newdepositaddress", coin) :
+                   GetDepositAddressAsync(coin);
+        }
+
+        public Task<Withdrawal> GetWithdrawalAsync(int id)
+        {
+            return GetDataAsync<Withdrawal>("withdrawal", id);
+        }
+
+        public Task<IList<Withdrawal>> GetWithdrawalsAsync()
+        {
+            return GetDataAsync<IList<Withdrawal>>("withdrawals");
+        }
+
+        public Task<IList<Withdrawal>> GetWithdrawalsAsync(string coin)
+        {
+            return GetDataAsync<IList<Withdrawal>>("withdrawals", coin);
+        }
+
+        public Task<IList<Withdrawal>> GetWithdrawalsAsync(string coin, int start, int limit)
+        {
+            return GetDataAsync<IList<Withdrawal>>("withdrawals", coin, start, limit);
+        }
+
+        public Task<IList<Withdrawal>> GetWithdrawalsAsync(int limit)
+        {
+            return GetWithdrawalsAsync("ALL", 0, limit);
+        }
+
+        public Task<IList<Withdrawal>> GetWithdrawalsAsync(int start, int limit)
+        {
+            return GetWithdrawalsAsync("ALL", start, limit);
+        }
+
+        public Task<Withdrawal> PostWithdrawalRequestAsync(string address, double amount)
+        {
+            var postData = new Dictionary<string, object>(2) {
+                { "address", address },
+                { "amount", amount.ToStringUniform() }
+            };
+
+            return PostDataAsync<Withdrawal>("withdraw", postData);
+        }
+
+        public Task DeleteWithdrawalRequestAsync(int id)
+        {
+            return DeleteDataAsync("withdraw", id);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private async Task<T> GetDataAsync<T>(string command, params object[] parameters)
+        {
+            return await ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixWallet + command, parameters);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private async Task DeleteDataAsync(string command, params object[] parameters)
+        {
+            await ApiWebClient.DeleteDataAsync(Helper.ApiUrlPrefixWallet + command, parameters);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private async Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
+        {
+            return await ApiWebClient.PostDataAsync<T>(Helper.ApiUrlPrefixWallet + command, postData);
         }
     }
 }

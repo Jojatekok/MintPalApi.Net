@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -20,7 +19,6 @@ namespace MintPalAPI
         internal static readonly string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         internal static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
         internal static async Task<string> GetResponseStringAsync(this HttpWebRequest request)
         {
@@ -33,6 +31,11 @@ namespace MintPalAPI
                     }
                 }
             }
+        }
+
+        internal static string ToStringUniform(this double value)
+        {
+            return value.ToString("0.########", InvariantCulture);
         }
 
         internal static string ToHttpPostString(this Dictionary<string, object> dictionary)
