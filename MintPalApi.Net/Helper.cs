@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -14,6 +13,7 @@ namespace MintPalAPI
         internal const string ApiUrlBase = "https://api.mintpal.com/";
         private const string ApiUrlVersionString = "v2/";
         internal const string ApiUrlPrefixMarket = ApiUrlVersionString + "market/";
+        internal const string ApiUrlPrefixTrading = ApiUrlVersionString + "trading/";
         internal const string ApiUrlPrefixWallet = ApiUrlVersionString + "wallet/";
 
         internal static readonly string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);

@@ -1,4 +1,4 @@
-﻿namespace MintPalAPI
+﻿namespace MintPalAPI.Market
 {
     public enum MarketPeriod
     {

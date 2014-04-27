@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI
+namespace MintPalAPI.Market
 {
     public class Markets
     {
@@ -80,9 +80,9 @@ namespace MintPalAPI
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> GetDataAsync<T>(string command, params string[] parameters)
+        private Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
-            return await ApiWebClient.GetDataAsync<T>(Helper.ApiUrlPrefixMarket + command, parameters);
+            return ApiWebClient.GetDataAsync<T>(Helper.ApiUrlPrefixMarket + command, parameters);
         }
     }
 }

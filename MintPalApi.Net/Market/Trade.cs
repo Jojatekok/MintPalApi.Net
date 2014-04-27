@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI
+namespace MintPalAPI.Market
 {
     public class Trade
     {

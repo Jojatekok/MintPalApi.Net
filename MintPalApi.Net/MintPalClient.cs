@@ -6,8 +6,9 @@
 
         public Authenticator Authenticator { get; private set; }
 
-        public Markets Markets { get; private set; }
-        public Wallet Wallet { get; private set; }
+        public Market.Markets Markets { get; private set; }
+        public Trading.Trading Trading { get; private set; }
+        public Wallet.Wallet Wallet { get; private set; }
 
         public MintPalClient(string publicApiKey, string privateApiKey)
         {
@@ -15,8 +16,9 @@
 
             Authenticator = new Authenticator(_apiWebClient, publicApiKey, privateApiKey);
 
-            Markets = new Markets(_apiWebClient);
-            Wallet = new Wallet(_apiWebClient);
+            Markets = new Market.Markets(_apiWebClient);
+            Trading = new Trading.Trading(_apiWebClient);
+            Wallet = new Wallet.Wallet(_apiWebClient);
         }
 
         public MintPalClient() : this(null, null)

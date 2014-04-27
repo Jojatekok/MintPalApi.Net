@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI
+namespace MintPalAPI.Wallet
 {
     public class Wallet
     {
@@ -106,21 +106,21 @@ namespace MintPalAPI
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> GetDataAsync<T>(string command, params object[] parameters)
+        private Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
-            return await ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixWallet + command, parameters);
+            return ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixWallet + command, parameters);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task DeleteDataAsync(string command, params object[] parameters)
+        private Task DeleteDataAsync(string command, params object[] parameters)
         {
-            await ApiWebClient.DeleteDataAsync(Helper.ApiUrlPrefixWallet + command, parameters);
+            return ApiWebClient.DeleteDataAsync(Helper.ApiUrlPrefixWallet + command, parameters);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
+        private Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
         {
-            return await ApiWebClient.PostDataAsync<T>(Helper.ApiUrlPrefixWallet + command, postData);
+            return ApiWebClient.PostDataAsync<T>(Helper.ApiUrlPrefixWallet + command, postData);
         }
     }
 }

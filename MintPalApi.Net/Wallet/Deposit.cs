@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI
+namespace MintPalAPI.Wallet
 {
     public class Deposit
     {
@@ -29,10 +29,10 @@ namespace MintPalAPI
         public int ConfirmationsRequired { get; private set; }
 
         [JsonProperty("time_formatted")]
-        private string TimeFormattedString { get; set; }
-        public DateTime TimeFormatted {
-            get { return DateTime.ParseExact(TimeFormattedString, "yyyy-MM-dd HH:mm:ss", Helper.InvariantCulture); }
+        private string TimeFormattedString {
+            set { TimeFormatted = DateTime.ParseExact(value, "yyyy-MM-dd HH:mm:ss", Helper.InvariantCulture); }
         }
+        public DateTime TimeFormatted { get; private set; }
 
         [JsonProperty("status")]
         public string Status { get; private set; }

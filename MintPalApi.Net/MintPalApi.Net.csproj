@@ -49,13 +49,16 @@
     <Compile Include="Helper.cs" />
     <Compile Include="General\Authenticator.cs" />
     <Compile Include="General\JsonResponse.cs" />
+    <Compile Include="General\OrderType.cs" />
     <Compile Include="Market\Market.cs" />
     <Compile Include="Market\MarketChartData.cs" />
     <Compile Include="Market\MarketPeriod.cs" />
     <Compile Include="Market\Markets.cs" />
     <Compile Include="Market\Order.cs" />
-    <Compile Include="Market\OrderType.cs" />
     <Compile Include="Market\Trade.cs" />
+    <Compile Include="Trading\Order.cs" />
+    <Compile Include="Trading\Trade.cs" />
+    <Compile Include="Trading\Trading.cs" />
     <Compile Include="Wallet\Balance.cs" />
     <Compile Include="Wallet\Deposit.cs" />
     <Compile Include="Wallet\Wallet.cs" />
