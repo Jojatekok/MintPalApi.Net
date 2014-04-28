@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.Market
+namespace MintPalAPI.MarketTools
 {
     public class MarketChartData
     {

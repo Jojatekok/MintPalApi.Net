@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MintPalAPI.Market
+namespace MintPalAPI.MarketTools
 {
     public class Order
     {

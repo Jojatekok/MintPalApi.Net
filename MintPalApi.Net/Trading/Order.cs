@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.Trading
+namespace MintPalAPI.TradingTools
 {
     public class Order
     {

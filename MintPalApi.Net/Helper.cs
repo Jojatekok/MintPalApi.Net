@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -29,6 +31,16 @@ namespace MintPalAPI
                     using (var reader = new StreamReader(stream)) {
                         return await reader.ReadToEndAsync();
                     }
+                }
+            }
+        }
+
+        [SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
+        internal static T DeserializeObject<T>(this JsonSerializer serializer, string value)
+        {
+            using (var stringReader = new StringReader(value)) {
+                using (var jsonTextReader = new JsonTextReader(stringReader)) {
+                    return (T)serializer.Deserialize(jsonTextReader, typeof(T));
                 }
             }
         }

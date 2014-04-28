@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace MintPalAPI
 {
@@ -12,8 +12,8 @@ namespace MintPalAPI
 
         internal Authenticator Authenticator { private get; set; }
 
+        private static readonly JsonSerializer JsonSerializer = new JsonSerializer { NullValueHandling = NullValueHandling.Ignore };
         private static readonly Encoding Encoding = Encoding.UTF8;
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
         internal ApiWebClient(string baseUrl)
         {
@@ -25,7 +25,7 @@ namespace MintPalAPI
             var relativeUrl = CreateRelativeUrl(authenticate, command, parameters);
 
             var jsonString = await QueryStringAsync("GET", relativeUrl);
-            return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
+            return JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
         }
 
         internal async Task<T> GetDataAsync<T>(string command, params object[] parameters)
@@ -38,7 +38,7 @@ namespace MintPalAPI
             var relativeUrl = CreateRelativeUrl(true, command, parameters);
 
             var jsonString = await QueryStringAsync("DELETE", relativeUrl);
-            JsonConvert.DeserializeObject<JsonResponse<object>>(jsonString, JsonSerializerSettings).CheckStatus();
+            JsonSerializer.DeserializeObject<JsonResponse<object>>(jsonString).CheckStatus();
         }
 
         internal async Task<T> PostDataAsync<T>(string relativeUrl, Dictionary<string, object> postData)
@@ -46,7 +46,7 @@ namespace MintPalAPI
             relativeUrl = Authenticator.GetUrl(BaseUrl + relativeUrl);
 
             var jsonString = await PostStringAsync(relativeUrl, postData.ToHttpPostString());
-            return JsonConvert.DeserializeObject<JsonResponse<T>>(jsonString, JsonSerializerSettings).Data;
+            return JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
         }
 
         private async Task<string> QueryStringAsync(string method, string relativeUrl)

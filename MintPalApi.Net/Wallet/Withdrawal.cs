@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.Wallet
+namespace MintPalAPI.WalletTools
 {
     public class Withdrawal
     {

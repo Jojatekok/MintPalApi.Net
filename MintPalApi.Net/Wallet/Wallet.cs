@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.Wallet
+namespace MintPalAPI.WalletTools
 {
     public class Wallet
     {

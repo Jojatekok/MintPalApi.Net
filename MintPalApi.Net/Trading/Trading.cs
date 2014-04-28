@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.Trading
+namespace MintPalAPI.TradingTools
 {
     public class Trading
     {

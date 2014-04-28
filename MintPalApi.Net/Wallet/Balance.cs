@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MintPalAPI.Wallet
+namespace MintPalAPI.WalletTools
 {
     public class Balance
     {

@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.Market
+namespace MintPalAPI.MarketTools
 {
     public class Markets
     {
