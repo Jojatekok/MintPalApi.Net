@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Reflection;
 
 namespace MintPalAPI.Demo
 {
@@ -8,6 +8,9 @@ namespace MintPalAPI.Demo
 
         public MainWindow()
         {
+            // Set icon from the assembly
+            Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location).ToImageSource();
+            
             InitializeComponent();
 
             MintPalClient = new MintPalClient();
