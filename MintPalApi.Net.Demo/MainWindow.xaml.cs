@@ -13,15 +13,15 @@ namespace MintPalAPI.Demo
             
             InitializeComponent();
 
-            MintPalClient = new MintPalClient();
-            LoadMarketSummary();
+            MintPalClient = new MintPalClient(ApiKeys.PublicKey, ApiKeys.PrivateKey);
+            LoadMarketSummaryAsync();
         }
 
-        private async void LoadMarketSummary()
+        private async void LoadMarketSummaryAsync()
         {
+            var markets = await MintPalClient.Markets.GetSummaryAsync();
             DataGrid1.Items.Clear();
 
-            var markets = await MintPalClient.Markets.GetSummaryAsync();
             foreach (var market in markets) {
                 DataGrid1.Items.Add(market);
             }

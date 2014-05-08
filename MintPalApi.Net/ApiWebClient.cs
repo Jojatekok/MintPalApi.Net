@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,17 +22,15 @@ namespace MintPalAPI
             BaseUrl = baseUrl;
         }
 
-        internal async Task<T> GetDataAsync<T>(bool authenticate, string command, params object[] parameters)
+        internal async Task<T> GetDataAsync<T>(object baseObject, bool authenticate, string command, params object[] parameters)
         {
             var relativeUrl = CreateRelativeUrl(authenticate, command, parameters);
 
             var jsonString = await QueryStringAsync("GET", relativeUrl);
-            return JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
-        }
+            var output = JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
 
-        internal async Task<T> GetDataAsync<T>(string command, params object[] parameters)
-        {
-            return await GetDataAsync<T>(false, command, parameters);
+            SetBaseObjects(output, baseObject);
+            return output;
         }
 
         internal async Task DeleteDataAsync(string command, params object[] parameters)
@@ -41,12 +41,15 @@ namespace MintPalAPI
             JsonSerializer.DeserializeObject<JsonResponse<object>>(jsonString).CheckStatus();
         }
 
-        internal async Task<T> PostDataAsync<T>(string relativeUrl, Dictionary<string, object> postData)
+        internal async Task<T> PostDataAsync<T>(object baseObject, string command, Dictionary<string, object> postData)
         {
-            relativeUrl = Authenticator.GetUrl(BaseUrl + relativeUrl);
+            var relativeUrl = Authenticator.GetUrl(BaseUrl + command);
 
             var jsonString = await PostStringAsync(relativeUrl, postData.ToHttpPostString());
-            return JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
+            var output = JsonSerializer.DeserializeObject<JsonResponse<T>>(jsonString).Data;
+
+            SetBaseObjects(output, baseObject);
+            return output;
         }
 
         private async Task<string> QueryStringAsync(string method, string relativeUrl)
@@ -59,7 +62,7 @@ namespace MintPalAPI
         private async Task<string> PostStringAsync(string relativeUrl, string postData)
         {
             var request = CreateHttpWebRequest("POST", relativeUrl);
-            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentType = "application/json";
 
             var postBytes = Encoding.GetBytes(postData);
             request.ContentLength = postBytes.Length;
@@ -89,10 +92,31 @@ namespace MintPalAPI
             request.Method = method;
             request.UserAgent = "MintPal API .NET v" + Helper.AssemblyVersion;
 
+            request.Timeout = Helper.RequestsTimeoutMilliseconds;
+
             request.Headers[HttpRequestHeader.AcceptEncoding] = "gzip,deflate";
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
             return request;
+        }
+
+        private static void SetBaseObjects(object input, object baseObject)
+        {
+            var refreshableObject = input as RefreshableObject;
+            if (refreshableObject != null) {
+                refreshableObject.BaseObject = baseObject;
+                return;
+            }
+
+            var refreshableObjects = input as IList;
+            if (refreshableObjects != null) {
+                for (var i = refreshableObjects.Count - 1; i >= 0; i--) {
+                    refreshableObject = refreshableObjects[i] as RefreshableObject;
+                    Debug.Assert(refreshableObject != null);
+
+                    refreshableObject.BaseObject = baseObject;
+                }
+            }
         }
     }
 }

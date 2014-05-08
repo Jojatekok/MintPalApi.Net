@@ -66,6 +66,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ApiKeys.cs" />
     <Compile Include="Helper.cs" />
   </ItemGroup>
   <ItemGroup>

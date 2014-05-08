@@ -49,6 +49,7 @@
     <Compile Include="General\Authenticator.cs" />
     <Compile Include="General\JsonResponse.cs" />
     <Compile Include="General\OrderType.cs" />
+    <Compile Include="General\RefreshableObject.cs" />
     <Compile Include="Market\Market.cs" />
     <Compile Include="Market\MarketChartData.cs" />
     <Compile Include="Market\MarketPeriod.cs" />

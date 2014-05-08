@@ -18,6 +18,9 @@ namespace MintPalAPI
         internal const string ApiUrlPrefixTrading = ApiUrlVersionString + "trading/";
         internal const string ApiUrlPrefixWallet = ApiUrlVersionString + "wallet/";
 
+        internal const int RequestsTimeoutMilliseconds = 8192;
+        internal const byte AuthRequestsExtraTimeSeconds = 4;
+
         internal static readonly string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         internal static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
@@ -26,7 +29,7 @@ namespace MintPalAPI
         {
             using (var response = await request.GetResponseAsync()) {
                 using (var stream = response.GetResponseStream()) {
-                    if (stream == null) return null; // TODO: Throw Exception
+                    if (stream == null) throw new NullReferenceException("The HttpWebRequest's response stream is empty.");
 
                     using (var reader = new StreamReader(stream)) {
                         return await reader.ReadToEndAsync();
@@ -74,6 +77,18 @@ namespace MintPalAPI
         internal static double DateTimeToUnixTimeStamp(DateTime dateTime)
         {
             return dateTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
+        }
+
+        internal static string[] SplitExchangePair(string input)
+        {
+            if (string.IsNullOrEmpty(input)) throw new ArgumentNullException("input");
+
+            var inputSplit = input.Split('/');
+            if (inputSplit.Length < 2) {
+                throw new ArgumentException("The string format of the provided exchange pair is invalid.", "input");
+            }
+
+            return inputSplit;
         }
     }
 }

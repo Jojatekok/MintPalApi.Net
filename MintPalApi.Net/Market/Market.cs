@@ -1,14 +1,22 @@
 ﻿using Newtonsoft.Json;
-using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MintPalAPI.MarketTools
 {
-    public class Market
+    public class Market : RefreshableObject
     {
         [JsonProperty("market_id")]
         public int Id { get; private set; }
         public string Name {
             get { return Code + "/" + Exchange; }
+
+            set {
+                var nameSplit = Helper.SplitExchangePair(value);
+
+                Code = nameSplit[0];
+                Exchange = nameSplit[1];
+            }
         }
 
         [JsonProperty("code")]
@@ -40,25 +48,27 @@ namespace MintPalAPI.MarketTools
             get { return OrderTopSell / OrderTopBuy - 1; }
         }
 
-        public Market()
+        public Market(Markets baseObject)
         {
-
+            BaseObject = baseObject;
         }
 
-        public Market(string name)
+        public override sealed async Task RefreshAsync()
         {
-            if (string.IsNullOrEmpty(name)) {
-                throw new ArgumentNullException("name");
-            }
+            var markets = BaseObject as Markets;
+            Debug.Assert(markets != null);
+            
+            var refreshedObject = await markets.GetStatsAsync(Code, Exchange);
 
-            var nameSplit = name.Split('/');
-
-            if (nameSplit.Length < 2) {
-                throw new ArgumentException("The string format of the provided exchange pair is invalid.", "name");
-            }
-
-            Code = nameSplit[0];
-            Exchange = nameSplit[1];
+            Id = refreshedObject.Id;
+            PriceLast = refreshedObject.PriceLast;
+            PriceYesterday = refreshedObject.PriceYesterday;
+            PriceChange = refreshedObject.PriceChange;
+            Price24HourHigh = refreshedObject.Price24HourHigh;
+            Price24HourLow = refreshedObject.Price24HourLow;
+            Volume24Hours = refreshedObject.Volume24Hours;
+            OrderTopBuy = refreshedObject.OrderTopBuy;
+            OrderTopSell = refreshedObject.OrderTopSell;
         }
     }
 }

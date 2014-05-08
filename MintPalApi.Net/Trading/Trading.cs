@@ -92,21 +92,21 @@ namespace MintPalAPI.TradingTools
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> GetDataAsync<T>(string command, params object[] parameters)
+        private Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
-            return await ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixTrading + command, parameters);
+            return ApiWebClient.GetDataAsync<T>(this, true, Helper.ApiUrlPrefixTrading + command, parameters);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task DeleteDataAsync(string command, params object[] parameters)
+        private Task DeleteDataAsync(string command, params object[] parameters)
         {
-            await ApiWebClient.DeleteDataAsync(Helper.ApiUrlPrefixTrading + command, parameters);
+            return ApiWebClient.DeleteDataAsync(Helper.ApiUrlPrefixTrading + command, parameters);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private async Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
+        private Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
         {
-            return await ApiWebClient.PostDataAsync<T>(Helper.ApiUrlPrefixTrading + command, postData);
+            return ApiWebClient.PostDataAsync<T>(this, Helper.ApiUrlPrefixTrading + command, postData);
         }
     }
 }

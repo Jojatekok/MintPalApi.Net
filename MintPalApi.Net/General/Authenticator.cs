@@ -31,10 +31,10 @@ namespace MintPalAPI
         {
             IsTimeDifferenceSet = true;
 
-            var serverTime = await ApiWebClient.GetDataAsync<double>("timestamp");
+            var serverTime = await ApiWebClient.GetDataAsync<double>(null, false, "timestamp");
             var clientTime = Helper.DateTimeToUnixTimeStamp(DateTime.UtcNow);
 
-            TimeDifference = serverTime - clientTime;
+            TimeDifference = serverTime - clientTime + Helper.AuthRequestsExtraTimeSeconds;
         }
 
         internal string GetUrl(string mainUrl)

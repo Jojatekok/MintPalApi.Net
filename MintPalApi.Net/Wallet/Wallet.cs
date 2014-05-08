@@ -60,7 +60,7 @@ namespace MintPalAPI.WalletTools
                    GetDepositAddressAsync(coin);
         }
 
-        public Task<Withdrawal> GetWithdrawalAsync(int id)
+        public Task<Withdrawal> GetWithdrawalAsync(long id)
         {
             return GetDataAsync<Withdrawal>("withdrawal", id);
         }
@@ -108,7 +108,7 @@ namespace MintPalAPI.WalletTools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
-            return ApiWebClient.GetDataAsync<T>(true, Helper.ApiUrlPrefixWallet + command, parameters);
+            return ApiWebClient.GetDataAsync<T>(this, true, Helper.ApiUrlPrefixWallet + command, parameters);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -120,7 +120,7 @@ namespace MintPalAPI.WalletTools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Task<T> PostDataAsync<T>(string command, Dictionary<string, object> postData)
         {
-            return ApiWebClient.PostDataAsync<T>(Helper.ApiUrlPrefixWallet + command, postData);
+            return ApiWebClient.PostDataAsync<T>(this, Helper.ApiUrlPrefixWallet + command, postData);
         }
     }
 }

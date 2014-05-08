@@ -82,7 +82,7 @@ namespace MintPalAPI.MarketTools
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private Task<T> GetDataAsync<T>(string command, params object[] parameters)
         {
-            return ApiWebClient.GetDataAsync<T>(Helper.ApiUrlPrefixMarket + command, parameters);
+            return ApiWebClient.GetDataAsync<T>(this, false, Helper.ApiUrlPrefixMarket + command, parameters);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace MintPalAPI.WalletTools
 {
-    public class Withdrawal
+    public class Withdrawal : RefreshableObject
     {
         [JsonProperty("id")]
         public long Id { get; private set; }
@@ -35,5 +37,23 @@ namespace MintPalAPI.WalletTools
 
         [JsonProperty("status")]
         public string Status { get; private set; }
+
+        public override sealed async Task RefreshAsync()
+        {
+            var wallet = BaseObject as Wallet;
+            Debug.Assert(wallet != null);
+
+            var refreshedObject = await wallet.GetWithdrawalAsync(Id);
+
+            Code = refreshedObject.Code;
+            Address = refreshedObject.Address;
+            Amount = refreshedObject.Amount;
+            Fee = refreshedObject.Fee;
+            TransactionId = refreshedObject.TransactionId;
+            Time = refreshedObject.Time;
+            IsPending = refreshedObject.IsPending;
+            TimeFormatted = refreshedObject.TimeFormatted;
+            Status = refreshedObject.Status;
+        }
     }
 }
