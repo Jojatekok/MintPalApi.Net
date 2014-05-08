@@ -50,19 +50,19 @@
     <Compile Include="General\JsonResponse.cs" />
     <Compile Include="General\OrderType.cs" />
     <Compile Include="General\RefreshableObject.cs" />
-    <Compile Include="Market\Market.cs" />
-    <Compile Include="Market\MarketChartData.cs" />
-    <Compile Include="Market\MarketPeriod.cs" />
-    <Compile Include="Market\Markets.cs" />
-    <Compile Include="Market\Order.cs" />
-    <Compile Include="Market\Trade.cs" />
-    <Compile Include="Trading\Order.cs" />
-    <Compile Include="Trading\Trade.cs" />
-    <Compile Include="Trading\Trading.cs" />
-    <Compile Include="Wallet\Balance.cs" />
-    <Compile Include="Wallet\Deposit.cs" />
-    <Compile Include="Wallet\Wallet.cs" />
-    <Compile Include="Wallet\Withdrawal.cs" />
+    <Compile Include="MarketTools\Market.cs" />
+    <Compile Include="MarketTools\MarketChartData.cs" />
+    <Compile Include="MarketTools\MarketPeriod.cs" />
+    <Compile Include="MarketTools\Markets.cs" />
+    <Compile Include="MarketTools\Order.cs" />
+    <Compile Include="MarketTools\Trade.cs" />
+    <Compile Include="TradingTools\Order.cs" />
+    <Compile Include="TradingTools\Trade.cs" />
+    <Compile Include="TradingTools\Trading.cs" />
+    <Compile Include="WalletTools\Balance.cs" />
+    <Compile Include="WalletTools\Deposit.cs" />
+    <Compile Include="WalletTools\Wallet.cs" />
+    <Compile Include="WalletTools\Withdrawal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
