@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.WalletTools
+namespace Jojatekok.MintPalAPI.WalletTools
 {
-    public class Wallet
+    public class Wallet : IWallet
     {
         private ApiWebClient ApiWebClient { get; set; }
 
@@ -13,37 +13,42 @@ namespace MintPalAPI.WalletTools
             ApiWebClient = apiWebClient;
         }
 
-        public Task<Balance> GetBalanceAsync(string coin)
+        public async Task<IBalance> GetBalanceAsync(string coin)
         {
-            return GetDataAsync<Balance>("balances", coin);
+            var data = await GetDataAsync<Balance>("balances", coin);
+            return (IBalance)data;
         }
 
-        public Task<IList<Balance>> GetBalancesAsync()
+        public async Task<IList<IBalance>> GetBalancesAsync()
         {
-            return GetDataAsync<IList<Balance>>("balances");
+            var data = await GetDataAsync<IList<Balance>>("balances");
+            return new List<IBalance>(data);
         }
 
-        public Task<IList<Deposit>> GetDepositsAsync()
+        public async Task<IList<IDeposit>> GetDepositsAsync()
         {
-            return GetDataAsync<IList<Deposit>>("deposits");
+            var data = await GetDataAsync<IList<Deposit>>("deposits");
+            return new List<IDeposit>(data);
         }
 
-        public Task<IList<Deposit>> GetDepositsAsync(string coin)
+        public async Task<IList<IDeposit>> GetDepositsAsync(string coin)
         {
-            return GetDataAsync<IList<Deposit>>("deposits", coin);
+            var data = await GetDataAsync<IList<Deposit>>("deposits", coin);
+            return new List<IDeposit>(data);
         }
 
-        public Task<IList<Deposit>> GetDepositsAsync(string coin, int start, int limit)
+        public async Task<IList<IDeposit>> GetDepositsAsync(string coin, int start, int limit)
         {
-            return GetDataAsync<IList<Deposit>>("deposits", coin, start, limit);
+            var data = await GetDataAsync<IList<Deposit>>("deposits", coin, start, limit);
+            return new List<IDeposit>(data);
         }
 
-        public Task<IList<Deposit>> GetDepositsAsync(int limit)
+        public Task<IList<IDeposit>> GetDepositsAsync(int limit)
         {
             return GetDepositsAsync("ALL", 0, limit);
         }
 
-        public Task<IList<Deposit>> GetDepositsAsync(int start, int limit)
+        public Task<IList<IDeposit>> GetDepositsAsync(int start, int limit)
         {
             return GetDepositsAsync("ALL", start, limit);
         }
@@ -60,44 +65,49 @@ namespace MintPalAPI.WalletTools
                    GetDepositAddressAsync(coin);
         }
 
-        public Task<Withdrawal> GetWithdrawalAsync(long id)
+        public async Task<IWithdrawal> GetWithdrawalAsync(long id)
         {
-            return GetDataAsync<Withdrawal>("withdrawal", id);
+            var data = await GetDataAsync<Withdrawal>("withdrawal", id);
+            return (IWithdrawal)data;
         }
 
-        public Task<IList<Withdrawal>> GetWithdrawalsAsync()
+        public async Task<IList<IWithdrawal>> GetWithdrawalsAsync()
         {
-            return GetDataAsync<IList<Withdrawal>>("withdrawals");
+            var data = await GetDataAsync<IList<Withdrawal>>("withdrawals");
+            return new List<IWithdrawal>(data);
         }
 
-        public Task<IList<Withdrawal>> GetWithdrawalsAsync(string coin)
+        public async Task<IList<IWithdrawal>> GetWithdrawalsAsync(string coin)
         {
-            return GetDataAsync<IList<Withdrawal>>("withdrawals", coin);
+            var data = await GetDataAsync<IList<Withdrawal>>("withdrawals", coin);
+            return new List<IWithdrawal>(data);
         }
 
-        public Task<IList<Withdrawal>> GetWithdrawalsAsync(string coin, int start, int limit)
+        public async Task<IList<IWithdrawal>> GetWithdrawalsAsync(string coin, int start, int limit)
         {
-            return GetDataAsync<IList<Withdrawal>>("withdrawals", coin, start, limit);
+            var data = await GetDataAsync<IList<Withdrawal>>("withdrawals", coin, start, limit);
+            return new List<IWithdrawal>(data);
         }
 
-        public Task<IList<Withdrawal>> GetWithdrawalsAsync(int limit)
+        public Task<IList<IWithdrawal>> GetWithdrawalsAsync(int limit)
         {
             return GetWithdrawalsAsync("ALL", 0, limit);
         }
 
-        public Task<IList<Withdrawal>> GetWithdrawalsAsync(int start, int limit)
+        public Task<IList<IWithdrawal>> GetWithdrawalsAsync(int start, int limit)
         {
             return GetWithdrawalsAsync("ALL", start, limit);
         }
 
-        public Task<Withdrawal> PostWithdrawalRequestAsync(string address, double amount)
+        public async Task<IWithdrawal> PostWithdrawalRequestAsync(string address, double amount)
         {
             var postData = new Dictionary<string, object>(2) {
                 { "address", address },
                 { "amount", amount.ToStringUniform() }
             };
 
-            return PostDataAsync<Withdrawal>("withdraw", postData);
+            var data = await PostDataAsync<Withdrawal>("withdraw", postData);
+            return (IWithdrawal)data;
         }
 
         public Task DeleteWithdrawalRequestAsync(int id)

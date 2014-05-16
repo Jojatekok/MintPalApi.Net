@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
     class JsonResponse<T>
     {

@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 
-namespace MintPalAPI.MarketTools
+namespace Jojatekok.MintPalAPI.MarketTools
 {
-    public class Order
+    public class Order : IOrder
     {
         [JsonProperty("price")]
         public double PricePerCoin { get; private set; }

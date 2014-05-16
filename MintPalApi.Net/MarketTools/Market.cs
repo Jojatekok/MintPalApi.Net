@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.MarketTools
+namespace Jojatekok.MintPalAPI.MarketTools
 {
-    public class Market : RefreshableObject
+    public class Market : RefreshableObject, IMarket
     {
         [JsonProperty("market_id")]
         public int Id { get; private set; }
@@ -12,7 +12,7 @@ namespace MintPalAPI.MarketTools
             get { return Code + "/" + Exchange; }
 
             set {
-                var nameSplit = Helper.SplitExchangePair(value);
+                var nameSplit = Helper.SplitCoinPair(value);
 
                 Code = nameSplit[0];
                 Exchange = nameSplit[1];
@@ -48,12 +48,7 @@ namespace MintPalAPI.MarketTools
             get { return OrderTopSell / OrderTopBuy - 1; }
         }
 
-        public Market(Markets baseObject)
-        {
-            BaseObject = baseObject;
-        }
-
-        public override sealed async Task RefreshAsync()
+        public override async Task RefreshAsync()
         {
             var markets = BaseObject as Markets;
             Debug.Assert(markets != null);

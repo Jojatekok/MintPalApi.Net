@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.TradingTools
+namespace Jojatekok.MintPalAPI.TradingTools
 {
-    public class Order
+    public class Order : IOrder
     {
         [JsonProperty("order_id")]
         public string IdOrder { get; private set; }

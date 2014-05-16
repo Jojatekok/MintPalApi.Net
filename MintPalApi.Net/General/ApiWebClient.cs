@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
     sealed class ApiWebClient
     {
@@ -90,7 +89,7 @@ namespace MintPalAPI
         {
             var request = WebRequest.CreateHttp(BaseUrl + relativeUrl);
             request.Method = method;
-            request.UserAgent = "MintPal API .NET v" + Helper.AssemblyVersion;
+            request.UserAgent = "MintPal API .NET v" + Helper.AssemblyVersionString;
 
             request.Timeout = Helper.RequestsTimeoutMilliseconds;
 
@@ -112,9 +111,9 @@ namespace MintPalAPI
             if (refreshableObjects != null) {
                 for (var i = refreshableObjects.Count - 1; i >= 0; i--) {
                     refreshableObject = refreshableObjects[i] as RefreshableObject;
-                    Debug.Assert(refreshableObject != null);
-
-                    refreshableObject.BaseObject = baseObject;
+                    if (refreshableObject != null) {
+                        refreshableObject.BaseObject = baseObject;
+                    }
                 }
             }
         }

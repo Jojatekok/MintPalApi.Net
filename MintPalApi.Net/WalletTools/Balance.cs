@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.WalletTools
+namespace Jojatekok.MintPalAPI.WalletTools
 {
-    public class Balance : RefreshableObject
+    public class Balance : RefreshableObject, IBalance
     {
         [JsonProperty("id")]
         public int Id { get; private set; }
@@ -22,7 +22,7 @@ namespace MintPalAPI.WalletTools
         [JsonProperty("balance_held")]
         public double FundsHeld { get; private set; }
 
-        public override sealed async Task RefreshAsync()
+        public override async Task RefreshAsync()
         {
             var wallet = BaseObject as Wallet;
             Debug.Assert(wallet != null);

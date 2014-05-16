@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
     public abstract class RefreshableObject
     {

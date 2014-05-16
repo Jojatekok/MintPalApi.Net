@@ -1,30 +1,36 @@
-﻿using MintPalAPI.MarketTools;
-using MintPalAPI.TradingTools;
-using MintPalAPI.WalletTools;
+﻿using Jojatekok.MintPalAPI.MarketTools;
+using Jojatekok.MintPalAPI.TradingTools;
+using Jojatekok.MintPalAPI.WalletTools;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
     public sealed class MintPalClient
     {
-        private ApiWebClient _apiWebClient;
+        /// <summary>Represents the authenticator object of the client.</summary>
+        public IAuthenticator Authenticator { get; private set; }
 
-        public Authenticator Authenticator { get; private set; }
+        /// <summary>A class which contains market tools for the client.</summary>
+        public IMarkets Markets { get; private set; }
+        /// <summary>A class which contains trading tools for the client.</summary>
+        public ITrading Trading { get; private set; }
+        /// <summary>A class which contains wallet tools for the client.</summary>
+        public IWallet Wallet { get; private set; }
 
-        public Markets Markets { get; private set; }
-        public Trading Trading { get; private set; }
-        public Wallet Wallet { get; private set; }
-
+        /// <summary>Creates a new instance of MintPal API .NET's client service.</summary>
+        /// <param name="publicApiKey">Your public API key.</param>
+        /// <param name="privateApiKey">Your private API key.</param>
         public MintPalClient(string publicApiKey, string privateApiKey)
         {
-            _apiWebClient = new ApiWebClient(Helper.ApiUrlBase);
+            var apiWebClient = new ApiWebClient(Helper.ApiUrlBase);
 
-            Authenticator = new Authenticator(_apiWebClient, publicApiKey, privateApiKey);
+            Authenticator = new Authenticator(apiWebClient, publicApiKey, privateApiKey);
 
-            Markets = new Markets(_apiWebClient);
-            Trading = new Trading(_apiWebClient);
-            Wallet = new Wallet(_apiWebClient);
+            Markets = new Markets(apiWebClient);
+            Trading = new Trading(apiWebClient);
+            Wallet = new Wallet(apiWebClient);
         }
 
+        /// <summary>Creates a new, unauthorized instance of MintPal API .NET's client service.</summary>
         public MintPalClient() : this(null, null)
         {
 

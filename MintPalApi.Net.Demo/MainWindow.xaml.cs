@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace MintPalAPI.Demo
+namespace Jojatekok.MintPalAPI.Demo
 {
     public sealed partial class MainWindow
     {

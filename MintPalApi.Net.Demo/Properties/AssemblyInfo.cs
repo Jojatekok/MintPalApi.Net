@@ -6,7 +6,7 @@ using System.Windows;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information 
 // associated with an assembly.
-[assembly: AssemblyTitle("MintPalApi.Net.Demo")]
+[assembly: AssemblyTitle("MintPalAPI.NET Demo")]
 [assembly: AssemblyDescription("Demonstrates the use of MintPal API .NET")]
 [assembly: AssemblyCompany("Jojatekok")]
 [assembly: AssemblyProduct("MintPalAPI .NET Demo")]
@@ -45,7 +45,7 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.3.0")]
-[assembly: AssemblyFileVersion("0.3.0")]
+[assembly: AssemblyVersion("0.3.1")]
+[assembly: AssemblyFileVersion("0.3.1")]
 [assembly: GuidAttribute("689f4188-2f24-43d4-8bb4-97219973ddf2")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

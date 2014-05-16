@@ -8,7 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
     static class Helper
     {
@@ -21,7 +21,7 @@ namespace MintPalAPI
         internal const int RequestsTimeoutMilliseconds = 8192;
         internal const byte AuthRequestsExtraTimeSeconds = 4;
 
-        internal static readonly string AssemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+        internal static readonly string AssemblyVersionString = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
 
         internal static readonly CultureInfo InvariantCulture = CultureInfo.InvariantCulture;
 
@@ -79,7 +79,7 @@ namespace MintPalAPI
             return dateTime.Subtract(new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc)).TotalSeconds;
         }
 
-        internal static string[] SplitExchangePair(string input)
+        internal static string[] SplitCoinPair(string input)
         {
             if (string.IsNullOrEmpty(input)) throw new ArgumentNullException("input");
 

@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.TradingTools
+namespace Jojatekok.MintPalAPI.TradingTools
 {
-    public class Trading
+    public class Trading :ITrading
     {
         private ApiWebClient ApiWebClient { get; set; }
 
@@ -13,37 +13,42 @@ namespace MintPalAPI.TradingTools
             ApiWebClient = apiWebClient;
         }
 
-        public Task<Order> GetOpenOrderAsync(string id)
+        public async Task<IOrder> GetOpenOrderAsync(string id)
         {
-            return GetDataAsync<Order>("order", id);
+            var data = await GetDataAsync<Order>("order", id);
+            return (IOrder)data;
         }
 
-        public Task<IList<Order>> GetOpenOrdersAsync()
+        public async Task<IList<IOrder>> GetOpenOrdersAsync()
         {
-            return GetDataAsync<IList<Order>>("orders");
+            var data = await GetDataAsync<IList<Order>>("orders");
+            return new List<IOrder>(data);
         }
 
-        public Task<IList<Order>> GetOpenOrdersAsync(string coin)
+        public async Task<IList<IOrder>> GetOpenOrdersAsync(string coin)
         {
-            return GetDataAsync<IList<Order>>("orders", coin);
+            var data = await GetDataAsync<IList<Order>>("orders", coin);
+            return new List<IOrder>(data);
         }
 
-        public Task<IList<Order>> GetOpenOrdersAsync(string coin, int start, int limit)
+        public async Task<IList<IOrder>> GetOpenOrdersAsync(string coin, int start, int limit)
         {
-            return GetDataAsync<IList<Order>>("orders", coin, start, limit);
+            var data = await GetDataAsync<IList<Order>>("orders", coin, start, limit);
+            return new List<IOrder>(data);
         }
 
-        public Task<IList<Order>> GetOpenOrdersAsync(int limit)
+        public async Task<IList<IOrder>> GetOpenOrdersAsync(int limit)
         {
-            return GetOpenOrdersAsync("ALL", 0, limit);
+            var data = await GetOpenOrdersAsync("ALL", 0, limit);
+            return new List<IOrder>(data);
         }
 
-        public Task<IList<Order>> GetOpenOrdersAsync(int start, int limit)
+        public Task<IList<IOrder>> GetOpenOrdersAsync(int start, int limit)
         {
             return GetOpenOrdersAsync("ALL", start, limit);
         }
 
-        public Task<Order> PostOrderAsync(string coin, string exchange, double price, double amount, OrderType type)
+        public async Task<IOrder> PostOrderAsync(string coin, string exchange, double price, double amount, OrderType type)
         {
             var postData = new Dictionary<string, object>(2) {
                 { "coin", coin },
@@ -53,7 +58,14 @@ namespace MintPalAPI.TradingTools
                 { "type", (byte)type },
             };
 
-            return PostDataAsync<Order>("order", postData);
+            var data = await PostDataAsync<Order>("order", postData);
+            return (IOrder)data;
+        }
+
+        public Task<IOrder> PostOrderAsync(string coinPair, double price, double amount, OrderType type)
+        {
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return PostOrderAsync(coinPairSplit[0], coinPairSplit[0], price, amount, type);
         }
 
         public Task DeleteOrderAsync(string id)
@@ -61,32 +73,36 @@ namespace MintPalAPI.TradingTools
             return DeleteDataAsync("order", id);
         }
 
-        public Task<Trade> GetTradeAsync(string id)
+        public async Task<ITrade> GetTradeAsync(string id)
         {
-            return GetDataAsync<Trade>("trade", id);
+            var data = await GetDataAsync<Trade>("trade", id);
+            return (ITrade)data;
         }
 
-        public Task<IList<Trade>> GetTradesAsync()
+        public async Task<IList<ITrade>> GetTradesAsync()
         {
-            return GetDataAsync<IList<Trade>>("trades");
+            var data = await GetDataAsync<IList<Trade>>("trades");
+            return new List<ITrade>(data);
         }
 
-        public Task<IList<Trade>> GetTradesAsync(string coin)
+        public async Task<IList<ITrade>> GetTradesAsync(string coin)
         {
-            return GetDataAsync<IList<Trade>>("trades", coin);
+            var data = await GetDataAsync<IList<Trade>>("trades", coin);
+            return new List<ITrade>(data);
         }
 
-        public Task<IList<Trade>> GetTradesAsync(string coin, int start, int limit)
+        public async Task<IList<ITrade>> GetTradesAsync(string coin, int start, int limit)
         {
-            return GetDataAsync<IList<Trade>>("trades", coin, start, limit);
+            var data = await GetDataAsync<IList<Trade>>("trades", coin, start, limit);
+            return new List<ITrade>(data);
         }
 
-        public Task<IList<Trade>> GetTradesAsync(int limit)
+        public Task<IList<ITrade>> GetTradesAsync(int limit)
         {
             return GetTradesAsync("ALL", 0, limit);
         }
 
-        public Task<IList<Trade>> GetTradesAsync(int start, int limit)
+        public Task<IList<ITrade>> GetTradesAsync(int start, int limit)
         {
             return GetTradesAsync("ALL", start, limit);
         }

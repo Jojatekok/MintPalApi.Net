@@ -3,9 +3,9 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.WalletTools
+namespace Jojatekok.MintPalAPI.WalletTools
 {
-    public class Withdrawal : RefreshableObject
+    public class Withdrawal : RefreshableObject, IWithdrawal
     {
         [JsonProperty("id")]
         public long Id { get; private set; }
@@ -38,7 +38,7 @@ namespace MintPalAPI.WalletTools
         [JsonProperty("status")]
         public string Status { get; private set; }
 
-        public override sealed async Task RefreshAsync()
+        public override async Task RefreshAsync()
         {
             var wallet = BaseObject as Wallet;
             Debug.Assert(wallet != null);

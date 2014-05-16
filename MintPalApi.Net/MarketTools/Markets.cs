@@ -2,9 +2,9 @@
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace MintPalAPI.MarketTools
+namespace Jojatekok.MintPalAPI.MarketTools
 {
-    public class Markets
+    public class Markets : IMarkets
     {
         private ApiWebClient ApiWebClient { get; set; }
 
@@ -13,44 +13,69 @@ namespace MintPalAPI.MarketTools
             ApiWebClient = apiWebClient;
         }
 
-        public Task<IList<Market>> GetSummaryAsync()
+        public async Task<IList<IMarket>> GetSummaryAsync()
         {
-            return GetDataAsync<IList<Market>>("summary");
+            var data = await GetDataAsync<IList<Market>>("summary");
+            return new List<IMarket>(data);
         }
 
-        public Task<IList<Market>> GetSummaryAsync(string exchange)
+        public async Task<IList<IMarket>> GetSummaryAsync(string exchange)
         {
-            return GetDataAsync<IList<Market>>("summary", exchange);
+            var data = await GetDataAsync<IList<Market>>("summary", exchange);
+            return new List<IMarket>(data);
         }
 
-        public Task<Market> GetStatsAsync(string coinPair)
+        public async Task<IMarket> GetStatsAsync(string coin, string exchange)
         {
-            return GetDataAsync<Market>("stats", coinPair);
+            var data = await GetDataAsync<Market>("stats", coin, exchange);
+            return (IMarket)data;
         }
 
-        public Task<Market> GetStatsAsync(string coin, string exchange)
+        public Task<IMarket> GetStatsAsync(string coinPair)
         {
-            return GetDataAsync<Market>("stats", coin, exchange);
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return GetStatsAsync(coinPairSplit[0], coinPairSplit[1]);
         }
 
-        public Task<IList<Trade>> GetTradesAsync(string coin, string exchange)
+        public async Task<IList<ITrade>> GetTradesAsync(string coin, string exchange)
         {
-            return GetDataAsync<IList<Trade>>("trades", coin, exchange);
+            var data = await GetDataAsync<IList<Trade>>("trades", coin, exchange);
+            return new List<ITrade>(data);
         }
 
-        public Task<IList<Order>> GetOrdersAsync(string coin, string exchange, OrderType type)
+        public Task<IList<ITrade>> GetTradesAsync(string coinPair)
         {
-            return type == OrderType.Buy ?
-                   GetDataAsync<IList<Order>>("orders", coin, exchange, "BUY") :
-                   GetDataAsync<IList<Order>>("orders", coin, exchange, "SELL");
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return GetTradesAsync(coinPairSplit[0], coinPairSplit[1]);
         }
 
-        public Task<IList<MarketChartData>> GetChartDataAsync(string coin, string exchange)
+        public async Task<IList<IOrder>> GetOrdersAsync(string coin, string exchange, OrderType type)
         {
-            return GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange);
+            var data = await (type == OrderType.Buy ?
+                             GetDataAsync<IList<Order>>("orders", coin, exchange, "BUY") :
+                             GetDataAsync<IList<Order>>("orders", coin, exchange, "SELL"));
+            return new List<IOrder>(data);
         }
 
-        public Task<IList<MarketChartData>> GetChartDataAsync(string coin, string exchange, MarketPeriod period)
+        public Task<IList<IOrder>> GetOrdersAsync(string coinPair, OrderType type)
+        {
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return GetOrdersAsync(coinPairSplit[0], coinPairSplit[1], type);
+        }
+
+        public async Task<IList<IMarketChartData>> GetChartDataAsync(string coin, string exchange)
+        {
+            var data = await GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange);
+            return new List<IMarketChartData>(data);
+        }
+
+        public Task<IList<IMarketChartData>> GetChartDataAsync(string coinPair)
+        {
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return GetChartDataAsync(coinPairSplit[0], coinPairSplit[1]);
+        }
+
+        public async Task<IList<IMarketChartData>> GetChartDataAsync(string coin, string exchange, MarketPeriod period)
         {
             string periodString;
 
@@ -76,7 +101,14 @@ namespace MintPalAPI.MarketTools
                     break;
             }
 
-            return GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange, periodString);
+            var data = await GetDataAsync<IList<MarketChartData>>("chartdata", coin, exchange, periodString);
+            return new List<IMarketChartData>(data);
+        }
+
+        public Task<IList<IMarketChartData>> GetChartDataAsync(string coinPair, MarketPeriod period)
+        {
+            var coinPairSplit = Helper.SplitCoinPair(coinPair);
+            return GetChartDataAsync(coinPairSplit[0], coinPairSplit[1], period);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

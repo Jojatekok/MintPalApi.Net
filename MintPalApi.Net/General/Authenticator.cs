@@ -2,9 +2,9 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace MintPalAPI
+namespace Jojatekok.MintPalAPI
 {
-    public class Authenticator
+    public class Authenticator : IAuthenticator
     {
         private ApiWebClient ApiWebClient { get; set; }
 

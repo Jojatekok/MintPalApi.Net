@@ -1,4 +1,4 @@
-﻿namespace MintPalAPI.Demo
+﻿namespace Jojatekok.MintPalAPI.Demo
 {
     struct ApiKeys
     {

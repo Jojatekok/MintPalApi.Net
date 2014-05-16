@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.WalletTools
+namespace Jojatekok.MintPalAPI.WalletTools
 {
-    public class Deposit
+    public class Deposit : IDeposit
     {
         [JsonProperty("code")]
         public string Code { get; private set; }

@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace MintPalAPI.MarketTools
+namespace Jojatekok.MintPalAPI.MarketTools
 {
-    public class MarketChartData
+    public class MarketChartData  : IMarketChartData
     {
         [JsonProperty("date")]
         private string TimeString {
